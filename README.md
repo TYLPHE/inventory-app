@@ -1,8 +1,9 @@
 # inventory-app
 Manage a restaurant's inventory
+![A gif of how the app works](https://TYLPHE.github.io/inventory-app/)
 
 ## Links
-- [Try Inventory App here (In process)](https://TYLPHE.github.io/inventory-app/)
+- [Try Inventory App here (In progress...)](https://TYLPHE.github.io/inventory-app/)
 - [Link to assignment](https://www.theodinproject.com/lessons/nodejs-inventory-application)
 
 ## Summary

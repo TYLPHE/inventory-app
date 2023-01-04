@@ -12,4 +12,4 @@ ingredientsSchema.virtual('url').get(function () {
   return `/ingredients/${url}`;
 });
 
-module.exports = mongoose.Model('Ingredients', ingredientsSchema);
+module.exports = mongoose.model('Ingredients', ingredientsSchema);

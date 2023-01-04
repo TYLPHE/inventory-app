@@ -1,15 +1,6 @@
 #! /usr/bin/env_node
 
-console.log('This script populates some restaurant data into your database. Specified database as argument - e.g.: populatedb mongodb+srv://username:password@cluster0.rbwivgx.mongodb.net/?retryWrites=true&w=majority')
-
-// Get arguments passed on command line
-const userArgs = process.argv.slice(2);
-/*
-  if (!userArgs[0].startsWith('mongodb')) {
-    console.log('Error: You need to specify a valid mongodb URL as the first argument');
-    return;
-  }
-*/
+console.log('This script populates some restaurant data into your database.')
 
 const async = require('async');
 const equipment = require('./models/equipment');
@@ -20,12 +11,23 @@ const restaurant = require('./models/restaurant');
 const staff = require('./models/staff');
 
 const mongoose = require('mongoose');
-const equipment = require('./models/equipment');
-const mongoDB = userArgs[0];
-mongoose.connect(mongoDB, {
+
+// strictQuery phasing out in mongoose 7
+mongoose.set('strictQuery', false);
+
+const mongoDB = "mongodb+srv://<account>:<password>@cluster0.rbwivgx.mongodb.net/?retryWrites=true&w=majority";
+const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+}
+
+mongoose.connect(
+  mongoDB,
+  options,
+)
+.then(() => console.log('connected!'))
+.catch(e => console.log(`Connection ERROR: ${e}`));
+
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
@@ -149,7 +151,7 @@ function recipeCreate(
 function restaurantCreate(
   name,
   address,
-  number,
+  phone,
   founded,
   food,
   equipment,
@@ -159,7 +161,7 @@ function restaurantCreate(
   restaurantDetail = {
     name: name,
     address: address,
-    number: number,
+    phone: phone,
     founded: founded,
     food: food,
     equipment: equipment,
@@ -216,19 +218,19 @@ function staffCreate(
 function equipmentPopulate(cb) {
   async.series([
     (cb) => equipmentCreate('Blender', 99, '1-1-2020', false, 'Kitchen', 3, cb),
-  ]);
+  ], cb);
 }
 
 function foodPopulate(cb) {
   async.series([
     (cb) => foodCreate(recipeArr[0], ingredientsArr[0], cb),
-  ]);
+  ], cb);
 }
 
 function ingredientsPopulate(cb) {
   async.series([
     (cb) => ingredientsCreate('Flour', 2, 50, cb),
-  ]);
+  ], cb);
 }
 
 function recipePopulate(cb) {
@@ -240,35 +242,35 @@ function recipePopulate(cb) {
       3,
       cb
     ),
-  ])
+  ], cb);
 }
 
 function restaurantPopulate(cb) {
   async.series([
     (cb) => restaurantCreate('Slice to Meet You', '123 Pizza Lane', 5555555555, '1-1-2020', foodArr[0], equipmentArr[0], staffArr[0], cb),
-  ]);
+  ], cb);
 }
 
 function staffPopulate(cb) {
   async.series([
     (cb) => staffCreate('Tyl', 'Phe', 'Chef', 10, '1-1-2020', false, cb),
-  ]);
+  ], cb);
 }
 
 async.series([
-  equipmentPopulate,
-  foodPopulate,
-  ingredientsPopulate,
   recipePopulate,
-  restaurantPopulate,
+  ingredientsPopulate,
+  equipmentPopulate,
   staffPopulate,
+  foodPopulate,
+  restaurantPopulate,
 ],
   // Optional Callback
   function (err, results) {
     if (err) {
       console.log(`Fatal Error: ${err}`);
     } else {
-      console.log(`Result: ${result}`);
+      console.log(`Result: ${results}`);
     }
     // All done, disconnect from database
     mongoose.connection.close();

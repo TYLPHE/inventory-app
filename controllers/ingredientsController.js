@@ -1,4 +1,4 @@
-const ingredient = require('../models/ingredient');
+const ingredient = require('../models/ingredients');
 
 // Display list of all ingredients
 exports.ingredient_list = (req, res) => {

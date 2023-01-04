@@ -1,5 +1,10 @@
 const Restaurant = require('../models/restaurant');
 
+// Display website home page
+exports.index = (req, res) => {
+  res.send('not implemented: restaurant home page');
+};
+
 // Display list of all restaurants
 exports.restaurant_list = (req, res) => {
   res.send('not implemented: restaurant list');

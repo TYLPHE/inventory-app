@@ -1,13 +1,59 @@
 const Restaurant = require('../models/restaurant');
+const Equipment = require('../models/equipment');
+const Food = require('../models/food');
+const Ingredients = require('../models/ingredients');
+const Recipe = require('../models/recipe');
+const Staff = require('../models/staff');
+
+const async = require('async');
 
 // Display website home page
 exports.index = (req, res) => {
-  res.send('not implemented: restaurant home page');
+  async.parallel(
+    {
+      restaurantCount(callback) {
+        // Pass an empty object to find all documents in collection
+        Restaurant.countDocuments({}, callback);
+      },
+      equipmentCount(callback) {
+        Equipment.countDocuments({}, callback);
+      },
+      foodCount(callback) {
+        Food.countDocuments({}, callback);
+      },
+      ingredientsCount(callback) {
+        Ingredients.countDocuments({}, callback);
+      },
+      recipeCount(callback) {
+        Recipe.countDocuments({}, callback);
+      },
+      staffCount(callback) {
+        Staff.countDocuments({}, callback);
+      },
+    },
+    (err, results) => {
+      res.render('index', {
+        title: 'Inventory App',
+        error: err,
+        data: results,
+      });
+    }
+  );
 };
 
 // Display list of all restaurants
-exports.restaurant_list = (req, res) => {
-  res.send('not implemented: restaurant list');
+exports.restaurant_list = (req, res, next) => {
+  Restaurant.find({}, 'name')
+    .sort({ name: 1 })
+    .populate('name')
+    .exec(function (err, restaurant_list) {
+      if (err) {
+        return next(err);
+      }
+      // Successful so render page
+      console.log(restaurant_list)
+      res.render('restaurant_list', {title: 'Restaurant List', restaurant_list: restaurant_list});
+    })
 };
 
 // Display detail page for a specific restaurant

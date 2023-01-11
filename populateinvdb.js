@@ -4,18 +4,20 @@ console.log('This script populates some restaurant data into your database.')
 
 const async = require('async');
 const equipment = require('./models/equipment');
-const food = require('./models/food');
+const dish = require('./models/dish');
 const ingredients = require('./models/ingredients');
 const recipe = require('./models/recipe');
 const restaurant = require('./models/restaurant');
 const staff = require('./models/staff');
+// removing all 'food' data from the database
+// const food = require('./models/food');
 
 const mongoose = require('mongoose');
 
 // strictQuery phasing out in mongoose 7
 mongoose.set('strictQuery', false);
 
-const mongoDB = "mongodb+srv://<account>:<password>@cluster0.rbwivgx.mongodb.net/?retryWrites=true&w=majority";
+const mongoDB = "mongodb+srv://<>:<>@cluster0.rbwivgx.mongodb.net/inventory?retryWrites=true&w=majority";
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -33,7 +35,8 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
 const equipmentArr = [];
-const foodArr = [];
+// const foodArr = [];
+const dishArr = [];
 const ingredientsArr = [];
 const recipeArr = [];
 const restaurantArr = [];
@@ -73,28 +76,53 @@ function equipmentCreate(
   });
 }
 
-function foodCreate(
+function dishCreate(
+  dishName,
+  price,
   recipe,
-  ingredients,
-  cb,
+  cb
 ) {
-  foodDetail = {
+  dishDetail = {
+    dishName: dishName,
+    price: price,
     recipe: recipe,
-    ingredients: ingredients,
   }
 
-  const newFood = new food(foodDetail);
+  const newDish = new dish(dishDetail);
 
-  newFood.save(function (err) {
+  newDish.save(function(err) {
     if (err) {
       cb(err, null);
       return;
     }
-    console.log(`New Food : ${newFood}`);
-    foodArr.push(newFood);
-    cb(null, newFood);
+    console.log(`New Dish: ${newDish}`);
+    dishArr.push(newDish);
+    cb(null,newDish);
   });
 }
+
+// function foodCreate(
+//   recipe,
+//   ingredients,
+//   cb,
+// ) {
+//   foodDetail = {
+//     recipe: recipe,
+//     ingredients: ingredients,
+//   }
+
+  // const newFood = new food(foodDetail);
+
+//   newFood.save(function (err) {
+//     if (err) {
+//       cb(err, null);
+//       return;
+//     }
+//     console.log(`New Food : ${newFood}`);
+//     foodArr.push(newFood);
+//     cb(null, newFood);
+//   });
+// }
 
 function ingredientsCreate(
   name,
@@ -153,7 +181,7 @@ function restaurantCreate(
   address,
   phone,
   founded,
-  food,
+  dishes,
   equipment,
   staff,
   cb,
@@ -163,7 +191,7 @@ function restaurantCreate(
     address: address,
     phone: phone,
     founded: founded,
-    food: food,
+    dishes: dishes,
     equipment: equipment,
     staff: staff,
   };
@@ -221,33 +249,82 @@ function equipmentPopulate(cb) {
   ], cb);
 }
 
-function foodPopulate(cb) {
+function dishPopulate(cb) {
   async.series([
-    (cb) => foodCreate(recipeArr[0], ingredientsArr[0], cb),
+    (cb) => dishCreate(
+      'Pepperoni Pizza', 
+      10, 
+      recipeArr[0], 
+      cb
+    ),
+    (cb) => dishCreate(
+      'Cheeseburger', 
+      9, 
+      recipeArr[1], 
+      cb
+    ),
   ], cb);
 }
+
+// function foodPopulate(cb) {
+//   async.series([
+//     (cb) => foodCreate(recipeArr[0], ingredientsArr[0], cb),
+//   ], cb);
+// }
 
 function ingredientsPopulate(cb) {
   async.series([
     (cb) => ingredientsCreate('Flour', 2, 50, cb),
+    (cb) => ingredientsCreate('Pepperoni', 10, 10, cb),
+    (cb) => ingredientsCreate('Mozzarella', 2, 20, cb),
+    (cb) => ingredientsCreate('Tomato Sauce', 10, 2, cb),
+    (cb) => ingredientsCreate('Hamburger Patty', 20, .5, cb),
+    (cb) => ingredientsCreate('American Cheese', 20, .10, cb),
+    (cb) => ingredientsCreate('Buns', 20, .10, cb),
   ], cb);
 }
 
 function recipePopulate(cb) {
   async.series([
     (cb) => recipeCreate(
-      'Pizza', 
-      ingredientsArr[0],
+      dishArr[0], 
+      [ingredientsArr[0], ingredientsArr[1], ingredientsArr[2], ingredientsArr[3], ],
       'Mix flour with water and knead to dough. Press into a flat circle and add tomato sauce and cheese. Place into oven for 15 minutes',
       3,
       cb
+    ),
+    (cb) => recipeCreate(
+      dishArr[1],
+      [ingredientsArr[4], ingredientsArr[0], ingredientsArr[6], ],
+      'Cook hamburger patty on grill. 30 seconds before patty is finished cooking, add slice of american cheese. Place cooked patty with cheese on top between the hamburger bun',
+      .8,
+      cb,
     ),
   ], cb);
 }
 
 function restaurantPopulate(cb) {
   async.series([
-    (cb) => restaurantCreate('Slice to Meet You', '123 Pizza Lane', 5555555555, '1-1-2020', foodArr[0], equipmentArr[0], staffArr[0], cb),
+    (cb) => restaurantCreate(
+      'Slice to Meet You', 
+      '123 Pizza Lane', 
+      5555555555, 
+      '1-1-2020', 
+      dishArr[0], 
+      equipmentArr[0], 
+      staffArr[0], 
+      cb
+    ),
+    (cb) => restaurantCreate(
+      'Burger Queen', 
+      '2323 Hamburg Drive', 
+      8008580085, 
+      '1-1-2020', 
+      dishArr[1], 
+      equipmentArr[0], 
+      staffArr[0], 
+      cb
+    ),
   ], cb);
 }
 
@@ -258,11 +335,11 @@ function staffPopulate(cb) {
 }
 
 async.series([
-  recipePopulate,
   ingredientsPopulate,
   equipmentPopulate,
   staffPopulate,
-  foodPopulate,
+  recipePopulate,
+  dishPopulate,
   restaurantPopulate,
 ],
   // Optional Callback

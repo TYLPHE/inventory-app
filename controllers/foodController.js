@@ -2,7 +2,8 @@ const Food = require('../models/food');
 
 // Display list of all food
 exports.food_list = (req, res) => {
-  res.send('not implemented: food list');
+  Food.find()
+    .populate('food')
 };
 
 // Display detail page for a specific food

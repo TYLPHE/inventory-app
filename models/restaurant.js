@@ -7,7 +7,7 @@ const RestaurantSchema = new Schema({
   address: { type: String, required: true },
   phone: { type: Number, required: true },
   founded: { type: Date },
-  food: [{ type: Schema.Types.ObjectId, ref: 'Food' }],
+  dishes: [{ type: Schema.Types.ObjectId, ref: 'Dish' }],
   equipment: [{ type: Schema.Types.ObjectId, ref: 'Equipment' }],
   staff: [{ type: Schema.Types.ObjectId, ref: 'Staff' }],
 });

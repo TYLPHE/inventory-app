@@ -16,3 +16,10 @@ Below is a simple layout of my data structure:
 The data structure is influenced by the [MDN express tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose#designing_the_locallibrary_models), which is what I'm using as a guide as I develop this app.
 
 ## Challenges
+### Populating the database defaults to 'test'
+Thanks to [this article](https://stackoverflow.com/questions/61302342/mongodb-sets-my-database-to-test-automatically-how-to-change-it), I learned that we need to update the mongodb connection link like so:
+
+const mongoDB = "mongodb+srv://'account':'password'@cluster0.rbwivgx.mongodb.net/inventory?retryWrites=true&w=majority";
+
+In the case above, we connect to mongodb.net/INVENTORY, without the 'inventory' part, mongodb defaults to creating a database called 'test'.
+

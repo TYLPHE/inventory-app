@@ -5,8 +5,7 @@ const Schema = mongoose.Schema;
 const dishSchema = new Schema({
   dishName: String,
   price: Number,
-  recipe: { type: Schema.Types.ObjectId },
-  ingredients: { type: Schema.Types.ObjectId },
+  recipe: [{ type: Schema.Types.ObjectId }],
 });
 
 dishSchema.virtual('url').get(function () {

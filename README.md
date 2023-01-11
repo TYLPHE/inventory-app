@@ -4,7 +4,7 @@ Manage a restaurant's inventory
 
 ## Links
 - [Try Inventory App here (In progress...)](https://TYLPHE.github.io/inventory-app/)
-- [Link to assignment](https://www.theodinproject.com/lessons/nodejs-inventory-application)
+- [Link to assignment](https://www.theodinproject.com/lessons/nodejs-inventory-application-2)
 
 ## Summary
 Create, read, update, and delete a restaurant's inventory with Inventory App. This project allows me to practice more with Express, Mongoose, and Pug (formerly known as Jade).

@@ -4,10 +4,10 @@ const router = express.Router();
 // Require controller modules
 const restaurantController = require('../controllers/restaurantController');
 const equipmentController = require('../controllers/equipmentController');
-const foodController = require('../controllers/foodController');
 const ingredientsController = require('../controllers/ingredientsController');
 const recipeController = require('../controllers/recipeController');
 const staffController = require('../controllers/staffController');
+const dishController = require('../controllers/dishController');
 
 // RESTAURANT ROUTES //
 // GET restaurant home page
@@ -62,30 +62,30 @@ router.get('/equipment/:id', equipmentController.equipment_detail);
 // GET request for list of equipment
 router.get('/equipment_list', equipmentController.equipment_list);
 
-// FOOD ROUTES //
-//GET request for creating food. NOTE: This must come before routes that display food (uses id)
-router.get('/food/create', foodController.food_create_get);
+// Dish ROUTES //
+//GET request for creating dish. NOTE: This must come before routes that display dish (uses id)
+router.get('/dish/create', dishController.dish_create_get);
 
-// POST request for creating food
-router.post('/food/create', foodController.food_create_post);
+// POST request for creating dish
+router.post('/dish/create', dishController.dish_create_post);
 
-// GET request to delete food
-router.get('/food/:id/delete', foodController.food_delete_get);
+// GET request to delete dish
+router.get('/dish/:id/delete', dishController.dish_delete_get);
 
-// POST request to delete food
-router.post('food/:id/delete', foodController.food_delete_post);
+// POST request to delete dish
+router.post('dish/:id/delete', dishController.dish_delete_post);
 
-// GET request to update food
-router.get('/food/:id/update', foodController.food_update_get);
+// GET request to update dish
+router.get('/dish/:id/update', dishController.dish_update_get);
 
-// POST request to update food
-router.post('/food/:id/update', foodController.food_update_post);
+// POST request to update dish
+router.post('/dish/:id/update', dishController.dish_update_post);
 
-// GET request for one food
-router.get('/food/:id', foodController.food_detail);
+// GET request for one dish
+router.get('/dish/:id', dishController.dish_detail);
 
-// GET request for list of food
-router.get('/food_list', foodController.food_list);
+// GET request for list of dish
+router.get('/dish_list', dishController.dish_list);
 
 // INGREDIENTS ROUTES
 //GET request for creating ingredients. NOTE: This must come before routes that display ingredients (uses id)

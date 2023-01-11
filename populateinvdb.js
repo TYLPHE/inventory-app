@@ -9,8 +9,6 @@ const ingredients = require('./models/ingredients');
 const recipe = require('./models/recipe');
 const restaurant = require('./models/restaurant');
 const staff = require('./models/staff');
-// removing all 'food' data from the database
-// const food = require('./models/food');
 
 const mongoose = require('mongoose');
 
@@ -35,7 +33,6 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
 const equipmentArr = [];
-// const foodArr = [];
 const dishArr = [];
 const ingredientsArr = [];
 const recipeArr = [];
@@ -100,29 +97,6 @@ function dishCreate(
     cb(null,newDish);
   });
 }
-
-// function foodCreate(
-//   recipe,
-//   ingredients,
-//   cb,
-// ) {
-//   foodDetail = {
-//     recipe: recipe,
-//     ingredients: ingredients,
-//   }
-
-  // const newFood = new food(foodDetail);
-
-//   newFood.save(function (err) {
-//     if (err) {
-//       cb(err, null);
-//       return;
-//     }
-//     console.log(`New Food : ${newFood}`);
-//     foodArr.push(newFood);
-//     cb(null, newFood);
-//   });
-// }
 
 function ingredientsCreate(
   name,
@@ -265,12 +239,6 @@ function dishPopulate(cb) {
     ),
   ], cb);
 }
-
-// function foodPopulate(cb) {
-//   async.series([
-//     (cb) => foodCreate(recipeArr[0], ingredientsArr[0], cb),
-//   ], cb);
-// }
 
 function ingredientsPopulate(cb) {
   async.series([

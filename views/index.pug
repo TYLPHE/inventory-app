@@ -3,6 +3,7 @@ extends layout
 block content
   h1= title
   p Welcome to #[em Inventory App], a very basic Express website.
+  p The theme of this website is restaurant inventory. Feel free to add, remove, and update any restaurant information on this website.
 
   h1 Dynamic content 
   
@@ -14,7 +15,7 @@ block content
   ul 
     li #[strong Restaurants:] !{data.restaurantCount}
     li #[strong Equipment:] !{data.equipmentCount}
-    li #[strong Foods:] !{data.foodCount}
+    li #[strong Dishes:] !{data.dishCount}
     li #[strong Ingredients:] !{data.ingredientsCount}
     li #[strong Recipes:] !{data.recipeCount}
     li #[strong Staff:] !{data.staffCount}

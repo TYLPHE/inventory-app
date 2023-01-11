@@ -1,6 +1,6 @@
 const Restaurant = require('../models/restaurant');
 const Equipment = require('../models/equipment');
-const Food = require('../models/food');
+const Dish = require('../models/dish');
 const Ingredients = require('../models/ingredients');
 const Recipe = require('../models/recipe');
 const Staff = require('../models/staff');
@@ -18,8 +18,8 @@ exports.index = (req, res) => {
       equipmentCount(callback) {
         Equipment.countDocuments({}, callback);
       },
-      foodCount(callback) {
-        Food.countDocuments({}, callback);
+      dishCount(callback) {
+        Dish.countDocuments({}, callback);
       },
       ingredientsCount(callback) {
         Ingredients.countDocuments({}, callback);

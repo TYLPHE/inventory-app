@@ -11,7 +11,7 @@ Create, read, update, and delete a restaurant's inventory with Inventory App. Th
 
 ## Data Structure
 Below is a simple layout of my data structure:
-![data structure of Inventory App](https://github.com/TYLPHE/inventory-app/blob/main/readme-assets/inventory-application-structure-2.jpg)
+![data structure of Inventory App](https://github.com/TYLPHE/inventory-app/blob/main/readme-assets/inventory-application-structure-3.jpg)
 
 The data structure is influenced by the [MDN express tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose#designing_the_locallibrary_models), which is what I'm using as a guide as I develop this app.
 

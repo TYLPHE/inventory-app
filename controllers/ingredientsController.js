@@ -1,8 +1,21 @@
 const ingredient = require('../models/ingredients');
 
 // Display list of all ingredients
-exports.ingredient_list = (req, res) => {
-  res.send('not implemented: ingredient list');
+exports.ingredient_list = (req, res, next) => {
+  ingredient.find()
+    .populate('name')
+    .exec(function (err, list_ingredient) {
+      if (err) {
+        return next(err);
+      }
+
+      console.log(list_ingredient);
+      // Successful > render page
+      res.render('ingredient_list', {
+        title: 'Ingredient List',
+        ingredientList: list_ingredient,
+      });
+    });
 };
 
 // Display detail page for a specific ingredient

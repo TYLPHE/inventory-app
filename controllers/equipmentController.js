@@ -1,8 +1,20 @@
-const Equipment = require('../models/equipment');
+const equipment = require('../models/equipment');
 
 // Display list of all equipment
-exports.equipment_list = (req, res) => {
-  res.send('not implemented: equipment list');
+exports.equipment_list = (req, res, next) => {
+  equipment.find()
+    .populate('name')
+    .exec(function (err, list_equip) {
+      if (err) {
+        return next(err);
+      }
+      
+      // Successful > render page
+      res.render('equip_list', {
+        title: 'Equipment List',
+        equipList: list_equip,
+      })
+    })
 };
 
 // Display detail page for a specific equipment

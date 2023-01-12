@@ -1,8 +1,20 @@
-const Staff = require('../models/staff');
+const staff = require('../models/staff');
 
 // Display list of all staff
-exports.staff_list = (req, res) => {
-  res.send('not implemented: staff list');
+exports.staff_list = (req, res, next) => {
+  staff.find()
+    .populate('first_name')
+    .exec(function(err, list_staff) {
+      if(err) {
+        return next(err);
+      }
+
+      // Successful > render page
+      res.render('staff_list', {
+        title: 'Staff List',
+        staffList: list_staff,
+      });
+    });
 };
 
 // Display detail page for specific staff

@@ -1,8 +1,20 @@
-const Recipe = require('../models/recipe');
+const recipe = require('../models/recipe');
 
 // Display list of all recipes
-exports.recipe_list = (req, res) => {
-  res.send('not implemented: recipe list');
+exports.recipe_list = (req, res, next) => {
+  recipe.find()
+    .populate('name')
+    .exec(function (err, list_recipe) {
+      if (err) {
+        return next(err);
+      }
+
+      // Successful > render page
+      res.render('recipe_list', {
+        title: 'Recipe List',
+        recipeList: list_recipe,
+      });
+    });
 };
 
 // Display detail page for a specific recipe

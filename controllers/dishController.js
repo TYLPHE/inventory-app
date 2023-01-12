@@ -1,19 +1,18 @@
-const Dish = require('../models/dish');
+const dish = require('../models/dish');
 
 // Display list of all dishes
 exports.dish_list = (req, res, next) => {
-  Dish.find()
+  dish.find()
     .populate('dishName')
     .exec(function (err, list_dish) {
       if (err) {
         return next(err);
       }
 
-      // Successful > Render page
-      console.log(`List Dish: ${list_dish}`);
+      // Successful > render page
       res.render('dish_list', {
         title: 'Dish List',
-        dish_list: list_dish
+        dishList: list_dish
       });
     });
 };

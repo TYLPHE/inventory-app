@@ -1,9 +1,9 @@
-const Restaurant = require('../models/restaurant');
-const Equipment = require('../models/equipment');
-const Dish = require('../models/dish');
-const Ingredients = require('../models/ingredients');
-const Recipe = require('../models/recipe');
-const Staff = require('../models/staff');
+const restaurant = require('../models/restaurant');
+const equipment = require('../models/equipment');
+const dish = require('../models/dish');
+const ingredients = require('../models/ingredients');
+const recipe = require('../models/recipe');
+const staff = require('../models/staff');
 
 const async = require('async');
 
@@ -13,22 +13,22 @@ exports.index = (req, res) => {
     {
       restaurantCount(callback) {
         // Pass an empty object to find all documents in collection
-        Restaurant.countDocuments({}, callback);
+        restaurant.countDocuments({}, callback);
       },
       equipmentCount(callback) {
-        Equipment.countDocuments({}, callback);
+        equipment.countDocuments({}, callback);
       },
       dishCount(callback) {
-        Dish.countDocuments({}, callback);
+        dish.countDocuments({}, callback);
       },
       ingredientsCount(callback) {
-        Ingredients.countDocuments({}, callback);
+        ingredients.countDocuments({}, callback);
       },
       recipeCount(callback) {
-        Recipe.countDocuments({}, callback);
+        recipe.countDocuments({}, callback);
       },
       staffCount(callback) {
-        Staff.countDocuments({}, callback);
+        staff.countDocuments({}, callback);
       },
     },
     (err, results) => {
@@ -43,7 +43,7 @@ exports.index = (req, res) => {
 
 // Display list of all restaurants
 exports.restaurant_list = (req, res, next) => {
-  Restaurant.find({}, 'name')
+  restaurant.find({}, 'name')
     .sort({ name: 1 })
     .populate('name')
     .exec(function (err, restaurant_list) {

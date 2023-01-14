@@ -9,7 +9,6 @@ exports.ingredient_list = (req, res, next) => {
         return next(err);
       }
 
-      console.log(list_ingredient);
       // Successful > render page
       res.render('ingredient_list', {
         title: 'Ingredient List',

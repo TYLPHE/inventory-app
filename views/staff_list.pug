@@ -1,0 +1,12 @@
+extends layout
+
+block content 
+  h1= title 
+
+  ul 
+    each val in staffList
+      li 
+        a(href=val.url) #{val.last_name}, #{val.first_name} 
+
+    else 
+      li No staff. Please create new staff.

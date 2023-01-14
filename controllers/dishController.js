@@ -10,6 +10,7 @@ exports.dish_list = (req, res, next) => {
       }
 
       // Successful > render page
+      console.log(list_dish);
       res.render('dish_list', {
         title: 'Dish List',
         dishList: list_dish

@@ -10,6 +10,7 @@ exports.staff_list = (req, res, next) => {
       }
 
       // Successful > render page
+      console.log(list_staff)
       res.render('staff_list', {
         title: 'Staff List',
         staffList: list_staff,

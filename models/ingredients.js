@@ -9,7 +9,7 @@ const ingredientsSchema = new Schema({
 });
 
 ingredientsSchema.virtual('url').get(function () {
-  return `/ingredients/${this._id}`;
+  return `/catalog/ingredients/${this._id}`;
 });
 
 module.exports = mongoose.model('Ingredients', ingredientsSchema);

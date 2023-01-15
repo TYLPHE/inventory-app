@@ -1,0 +1,10 @@
+extends layout 
+
+block content 
+  h1= title 
+  ul 
+    li #{dish.dishName} 
+      ul 
+        li Price: $#{dish.price}/ea
+        li 
+          a(href=recipe.url) Recipe

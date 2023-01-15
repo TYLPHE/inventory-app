@@ -9,7 +9,7 @@ const dishSchema = new Schema({
 });
 
 dishSchema.virtual('url').get(function () {
-  return `/dish/${this._id}`;
+  return `/catalog/dish/${this._id}`;
 });
 
 module.exports = mongoose.model('Dish', dishSchema);

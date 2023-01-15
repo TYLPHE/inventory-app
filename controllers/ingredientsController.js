@@ -1,4 +1,5 @@
 const ingredient = require('../models/ingredients');
+const async = require('async');
 
 // Display list of all ingredients
 exports.ingredient_list = (req, res, next) => {
@@ -18,8 +19,28 @@ exports.ingredient_list = (req, res, next) => {
 };
 
 // Display detail page for a specific ingredient
-exports.ingredient_detail = (req, res) => {
-  res.send(`not implemented: ingredient detail: ${req.params.id}`);
+exports.ingredient_detail = (req, res, next) => {
+  async.parallel(
+    {
+      findIngredient(callback) {
+        ingredient.findById(req.params.id).exec(callback);
+      }
+    },
+    (err, results) => {
+      if(err) {
+        return next(err);
+      }
+      if(results.findIngredient == null) {
+        const err = new Error('No ingredients found');
+        err.status = 404;
+        return next(err);
+      }
+      res.render('ingredient_detail', {
+        title: 'Ingredient detail',
+        ingredient: results.findIngredient,
+      });
+    }
+  );
 };
 
 // Display ingredient create form GET

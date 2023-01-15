@@ -21,7 +21,7 @@ const EquipmentSchema = new Schema({
 });
 
 EquipmentSchema.virtual('url').get(function () {
-  return `/equipment/${this._id}`;
+  return `/catalog/equipment/${this._id}`;
 });
 
 module.exports = mongoose.model('Equipment', EquipmentSchema);

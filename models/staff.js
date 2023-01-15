@@ -22,7 +22,7 @@ const StaffSchema = new Schema({
 });
 
 StaffSchema.virtual('url').get(function () {
-  return `/staff/${this._id}`;
+  return `/catalog/staff/${this._id}`;
 });
 
 module.exports = mongoose.model('Staff', StaffSchema);

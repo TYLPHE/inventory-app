@@ -1,0 +1,16 @@
+extends layout 
+
+block content 
+  #{console.log(dishes)}
+  h1= title 
+
+  ul 
+    li #{restaurant.name} 
+    ul 
+      li Address: #{restaurant.address} 
+      li Phone: #{restaurant.phone}
+      li Founded: #{restaurant.founded} 
+      li Menu: 
+        ul 
+          li 
+            a(href=dishes.url) #{dishes.dishName}

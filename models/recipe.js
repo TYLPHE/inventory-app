@@ -10,7 +10,7 @@ const RecipeSchema = new Schema({
 });
 
 RecipeSchema.virtual('url').get(function () {
-  return `/recipe/${this._id}`;
+  return `/catalog/recipe/${this._id}`;
 });
 
 module.exports = mongoose.model('Recipe', RecipeSchema);

@@ -32,7 +32,7 @@ router.get('/restaurant/:id/update', restaurantController.restaurant_update_get)
 router.post('/restaurant/:id/update', restaurantController.restaurant_update_post);
 
 // GET request for one restaurant
-router.get('restaurant/:id', restaurantController.restaurant_detail);
+router.get('/restaurant/:id', restaurantController.restaurant_detail);
 
 // GET request for list of all restaurants
 router.get('/restaurant_list', restaurantController.restaurant_list);

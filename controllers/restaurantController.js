@@ -51,14 +51,44 @@ exports.restaurant_list = (req, res, next) => {
         return next(err);
       }
       // Successful so render page
-      console.log(restaurant_list)
       res.render('restaurant_list', {title: 'Restaurant List', restaurant_list: restaurant_list});
     })
 };
 
 // Display detail page for a specific restaurant
-exports.restaurant_detail = (req, res) => {
-  res.send(`not implemented: restaurant detail: ${req.params.id}`);
+exports.restaurant_detail = (req, res, next) => {
+  restaurant.findById(req.params.id, function(err, findRestaurant){
+    if(err) return next(err);
+    console.log('findRestaurant: ', findRestaurant)
+    async.parallel(
+      {
+        finda(callback) {
+          dish.findById(findRestaurant.dishes[0]).exec(callback);
+        },
+        findb(callback) {
+          equipment.findById(findRestaurant.equipment[0]).exec(callback);
+        },
+        findc(callback) {
+          staff.findById(findRestaurant.staff[0]).exec(callback);
+        }
+      },
+      (err,results) => {
+        if(err) return next(err);
+        if (findRestaurant === null) {
+          const err = new Error('No restaurant found');
+          err.status = 404;
+          return next(err);
+        }
+        res.render('restaurant_detail', {
+          title: 'Restaurant detail',
+          restaurant: findRestaurant,
+          dishes: results.finda,
+          equipment: results.findb,
+          staff: results.findc,
+        })
+      }
+    );
+  })
 };
 
 // Display restaurant create form GET

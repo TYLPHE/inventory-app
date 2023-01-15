@@ -18,8 +18,16 @@ exports.equipment_list = (req, res, next) => {
 };
 
 // Display detail page for a specific equipment
-exports.equipment_detail = (req, res) => {
-  res.send(`not implemented: equipment detail: ${req.params.id}`);
+exports.equipment_detail = (req, res, next) => {
+  equipment.findById(req.params.id, function(err, equipDetail) {
+    if(err) {
+      return next(err);
+    }
+    res.render('equip_detail', {
+      title: 'Equipment deatil',
+      equipment: equipDetail,
+    })
+  })
 };
 
 // Display equipment create form GET

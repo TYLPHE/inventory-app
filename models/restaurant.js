@@ -14,7 +14,7 @@ const RestaurantSchema = new Schema({
 
 // Virtual for Restaurant's URL
 RestaurantSchema.virtual('url').get(function () {
-  return `/restaurant/${this._id}`;
+  return `/catalog/restaurant/${this._id}`;
 });
 
 module.exports = mongoose.model('Restaurant', RestaurantSchema);

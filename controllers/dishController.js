@@ -1,4 +1,6 @@
 const dish = require('../models/dish');
+const async = require('async');
+const recipe = require('../models/recipe');
 
 // Display list of all dishes
 exports.dish_list = (req, res, next) => {
@@ -19,9 +21,23 @@ exports.dish_list = (req, res, next) => {
 };
 
 // Display detail page for a specific dish
-exports.dish_detail = (req, res) => {
-  res.send('not implemented');
-}
+exports.dish_detail = (req, res, next) => {
+  dish.findById(req.params.id, function(err, dishDetail) {
+    if(err) {
+      return next(err);
+    }
+    recipe.findById(dishDetail.recipe, function(err, recipeDetail) {
+      if(err) {
+        return next(err);
+      }
+      res.render('dish_detail', {
+        title: 'Dish detail',
+        dish: dishDetail,
+        recipe: recipeDetail
+      });
+    });
+  });
+};
 
 // Display dish create form GET
 exports.dish_create_get = (req, res) => {

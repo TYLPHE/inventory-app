@@ -19,7 +19,7 @@ exports.recipe_list = (req, res, next) => {
 
 // Display detail page for a specific recipe
 exports.recipe_detail = (req, res) => {
-  res.send(`not implemented: recipe detail: ${req.params.id}`);
+  // Not implemented for now
 };
 
 // Display recipe create form GET

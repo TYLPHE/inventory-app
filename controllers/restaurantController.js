@@ -55,41 +55,31 @@ exports.restaurant_list = (req, res, next) => {
     })
 };
 
+
 // Display detail page for a specific restaurant
-exports.restaurant_detail = (req, res, next) => {
-  restaurant.findById(req.params.id, function(err, findRestaurant){
-    if(err) return next(err);
-    console.log('findRestaurant: ', findRestaurant)
-    async.parallel(
-      {
-        finda(callback) {
-          dish.findById(findRestaurant.dishes[0]).exec(callback);
-        },
-        findb(callback) {
-          equipment.findById(findRestaurant.equipment[0]).exec(callback);
-        },
-        findc(callback) {
-          staff.findById(findRestaurant.staff[0]).exec(callback);
-        }
-      },
-      (err,results) => {
-        if(err) return next(err);
-        if (findRestaurant === null) {
-          const err = new Error('No restaurant found');
-          err.status = 404;
-          return next(err);
-        }
-        res.render('restaurant_detail', {
-          title: 'Restaurant detail',
-          restaurant: findRestaurant,
-          dishes: results.finda,
-          equipment: results.findb,
-          staff: results.findc,
-        })
-      }
-    );
-  })
-};
+exports.restaurant_detail = async (req, res, next) => {
+  const restResult = await restaurant.findById(req.params.id).exec();
+  const dishArr = [];
+  const equipArr = [];
+  const staffArr = [];
+  for (const id of restResult.dishes) {
+    dishArr.push(await dish.findById(id).exec());
+  }
+  for (const id of restResult.equipment) {
+    equipArr.push(await equipment.findById(id).exec());
+  }
+  for (const id of restResult.staff) {
+    staffArr.push(await staff.findById(id).exec());
+  }
+
+  res.render('restaurant_detail', {
+    title: 'Restaurant detail',
+    restaurant: restResult,
+    dish: dishArr,
+    staff: staffArr,
+    equipment: equipArr,
+  });
+}
 
 // Display restaurant create form GET
 exports.restaurant_create_get = (req, res) => {

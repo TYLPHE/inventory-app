@@ -278,9 +278,9 @@ function restaurantPopulate(cb) {
       '123 Pizza Lane', 
       5555555555, 
       '1-1-2020', 
-      dishArr[0], 
-      equipmentArr[0], 
-      staffArr[0], 
+      dishArr, 
+      equipmentArr, 
+      staffArr, 
       cb
     ),
     (cb) => restaurantCreate(
@@ -288,9 +288,9 @@ function restaurantPopulate(cb) {
       '2323 Hamburg Drive', 
       8008580085, 
       '1-1-2020', 
-      dishArr[1], 
-      equipmentArr[0], 
-      staffArr[0], 
+      dishArr, 
+      equipmentArr, 
+      staffArr, 
       cb
     ),
   ], cb);

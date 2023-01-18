@@ -12,7 +12,7 @@ const app = express();
 
 // Set up mongoose connection
 const mongoose = require("mongoose");
-const mongoDB = "mongodb+srv://<>:<>@cluster0.rbwivgx.mongodb.net/inventory?retryWrites=true&w=majority";
+const mongoDB = "mongodb+srv://:@cluster0.rbwivgx.mongodb.net/inventory?retryWrites=true&w=majority";
 mongoose.set('strictQuery', false);
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;

@@ -2,10 +2,9 @@ extends layout
 
 block content 
   h1= title 
+  h3= equipment.name
   ul 
-    li #{equipment.name}
-      ul 
-        li Cost: #{equipment.cost} 
-        li Date Purchased: #{equipment.date_purchased} 
-        li Quantity: #{equipment.qty} 
+    li Cost: #{equipment.cost} 
+    li Date Purchased: #{equipment.date_purchased} 
+    li Quantity: #{equipment.qty} 
         

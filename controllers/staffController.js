@@ -20,7 +20,17 @@ exports.staff_list = (req, res, next) => {
 
 // Display detail page for specific staff
 exports.staff_detail = (req, res) => {
-  res.send(`not implemented: staff detail ${req.params.id}`);
+  staff.findById(req.params.id)
+    .exec(
+      function(err, results) {
+        if (err) console.error(err);
+        console.log(results);
+        res.render('staff_detail', {
+          title: 'Staff detail',
+          staff: results,
+        })
+      }
+    );
 };
 
 // Display staff create form GET

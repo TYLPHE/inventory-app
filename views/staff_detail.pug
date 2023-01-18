@@ -1,0 +1,9 @@
+extends layout 
+
+block content 
+  h1= title 
+  h3 #{staff.last_name}, #{staff.first_name} 
+  ul 
+    li Rate: #{staff.rate} 
+    li Start date: #{staff.start_date} 
+    li End date: #{staff.end_date} 

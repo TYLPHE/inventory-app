@@ -55,7 +55,6 @@ exports.restaurant_list = (req, res, next) => {
     })
 };
 
-
 // Display detail page for a specific restaurant
 exports.restaurant_detail = async (req, res, next) => {
   const restResult = await restaurant.findById(req.params.id).exec();

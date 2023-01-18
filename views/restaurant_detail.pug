@@ -3,16 +3,14 @@ extends layout
 block content 
   //- #{console.log('dish:', dish)}
   h1= title 
-
+  h3= restaurant.name 
   ul 
-    li #{restaurant.name} 
-    ul 
-      li Address: #{restaurant.address} 
-      li Phone: #{restaurant.phone}
-      li Founded: #{restaurant.founded} 
-      li Menu:
-        each val in dish
-          ul 
-            #{console.log(val)}
-            li
-              a(href=val.url) #{val.dishName}
+    li Address: #{restaurant.address} 
+    li Phone: #{restaurant.phone}
+    li Founded: #{restaurant.founded} 
+    li Menu:
+      each val in dish
+        ul 
+          #{console.log(val)}
+          li
+            a(href=val.url) #{val.dishName}

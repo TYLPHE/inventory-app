@@ -1,3 +1,4 @@
+const ingredients = require('../models/ingredients');
 const recipe = require('../models/recipe');
 
 // Display list of all recipes
@@ -18,8 +19,18 @@ exports.recipe_list = (req, res, next) => {
 };
 
 // Display detail page for a specific recipe
-exports.recipe_detail = (req, res) => {
-  // Not implemented for now
+exports.recipe_detail = async (req, res, next) => {
+  const recipeResult = await recipe.findById(req.params.id).exec()
+  const ingredientsArr = [];
+  for (const id of recipeResult.ingredients) {
+    ingredientsArr.push(await ingredients.findById(id).exec());
+  }
+
+  res.render('recipe_detail', {
+    title: 'Recipe detail',
+    recipe: recipeResult,
+    ingredients: ingredientsArr
+  });
 };
 
 // Display recipe create form GET

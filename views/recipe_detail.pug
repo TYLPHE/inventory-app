@@ -1,0 +1,16 @@
+extends layout 
+
+block content 
+  h1= title
+  h3= recipe.name
+  ul 
+    li Ingredients: 
+      ul 
+        each val in ingredients 
+          li
+            a(href=val.url) #{val.name}
+    li Instructions: 
+      ul 
+        li #{recipe.instructions}
+    li Cost: $#{recipe.value}
+  #{console.log(recipe)}

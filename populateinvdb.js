@@ -255,14 +255,14 @@ function ingredientsPopulate(cb) {
 function recipePopulate(cb) {
   async.series([
     (cb) => recipeCreate(
-      dishArr[0], 
+      'Pepperoni Pizza', 
       [ingredientsArr[0], ingredientsArr[1], ingredientsArr[2], ingredientsArr[3], ],
       'Mix flour with water and knead to dough. Press into a flat circle and add tomato sauce and cheese. Place into oven for 15 minutes',
       3,
       cb
     ),
     (cb) => recipeCreate(
-      dishArr[1],
+      'Cheeseburger',
       [ingredientsArr[4], ingredientsArr[0], ingredientsArr[6], ],
       'Cook hamburger patty on grill. 30 seconds before patty is finished cooking, add slice of american cheese. Place cooked patty with cheese on top between the hamburger bun',
       .8,

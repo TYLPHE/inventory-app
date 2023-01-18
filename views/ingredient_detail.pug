@@ -2,9 +2,8 @@ extends layout
 
 block content 
   h1= title
-  ul 
-    li #{ingredient.name}
-      ul
-        li qty: #{ingredient.qty} 
-        if ingredient.cost
-          li $#{ingredient.cost}/ea
+  h3= ingredient.name
+  ul
+    li qty: #{ingredient.qty} 
+    if ingredient.cost
+      li $#{ingredient.cost}/ea

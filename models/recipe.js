@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const RecipeSchema = new Schema({
-  name: { type: Schema.Types.ObjectId },
+  name: { type: String },
   ingredients: [{ type: Schema.Types.ObjectId, ref: 'Recipe' }],
   instructions: { type: String },
   value: { type: Number },

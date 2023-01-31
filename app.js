@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const dotenv = require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -12,7 +13,7 @@ const app = express();
 
 // Set up mongoose connection
 const mongoose = require("mongoose");
-const mongoDB = "mongodb+srv://<>:<>@cluster0.rbwivgx.mongodb.net/inventory?retryWrites=true&w=majority";
+const mongoDB = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.rbwivgx.mongodb.net/inventory?retryWrites=true&w=majority`;
 mongoose.set('strictQuery', false);
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;

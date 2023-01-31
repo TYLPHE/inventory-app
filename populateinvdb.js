@@ -11,11 +11,13 @@ const restaurant = require('./models/restaurant');
 const staff = require('./models/staff');
 
 const mongoose = require('mongoose');
+const dotenv = require('dotenv').config();
+
 
 // strictQuery phasing out in mongoose 7
 mongoose.set('strictQuery', false);
 
-const mongoDB = "mongodb+srv://<>:<>@cluster0.rbwivgx.mongodb.net/inventory?retryWrites=true&w=majority";
+const mongoDB = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.rbwivgx.mongodb.net/inventory?retryWrites=true&w=majority`;
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,

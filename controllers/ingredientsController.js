@@ -1,5 +1,6 @@
 const ingredient = require('../models/ingredients');
 const async = require('async');
+const { body, validationResult } = require('express-validator');
 
 // Display list of all ingredients
 exports.ingredient_list = (req, res, next) => {
@@ -45,13 +46,49 @@ exports.ingredient_detail = (req, res, next) => {
 
 // Display ingredient create form GET
 exports.ingredient_create_get = (req, res) => {
-  res.send('not implemented: ingredient create GET');
+  res.render('ingredient_form', { title: 'Create Ingredient' });
 };
 
 // Display ingredient create on POST
-exports.ingredient_create_post = (req, res) => {
-  res.send('not implemented: ingredient create POST');
-};
+exports.ingredient_create_post = [
+  // Validate and sanitize the form
+  body('name', 'Ingredient name required').trim().isLength({min: 1}).escape(),
+
+  // Process request after validation and sanitization
+  (req, res, next) => {
+    // Extract the validation errors from a request
+    const errors = validationResult(req);
+
+    // Create a genre object with escaped and trimmed data.
+    const ingredientName = new ingredient({ name: req.body.name });
+    if(!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages.
+      res.render('ingredient_form', {
+        title: 'Create Ingredient',
+        ingredientName,
+        error: errors.array(),
+      });
+      return;
+    } else {
+      // Data form is valid
+      // Check if ingredient with the same name already exists
+      ingredient.findOne({ name: req.body.name }).exec((err, found_ingredient) => {
+        if (found_ingredient) {
+          // Ingredient exists, redirect to its detail page
+          res.redirect(found_ingredient.url);
+        } else {
+          ingredientName.save((err) => {
+            if (err) {
+              return next(err);
+            }
+            // Ingredient is saved. Redirect to ingredient detail page
+            res.redirect(ingredientName.url);
+          });
+        }
+      });
+    }
+  }
+]
 
 // Display ingredient delete form on GET
 exports.ingredient_delete_get = (req, res) => {

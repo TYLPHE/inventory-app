@@ -13,8 +13,8 @@ block content
       input#cost.form-control(type='number' placeholder=0 name='cost' value=ingredient===undefined ? 0 : ingredient.cost)
     button.btn.btn-primary(type='submit') Submit 
 
-    if error 
+    if errors 
       p Errors
       ul 
-        for errors in error 
-          li!= errors.msg 
+        for error in errors 
+          li!= error.msg 

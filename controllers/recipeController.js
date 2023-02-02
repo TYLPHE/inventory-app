@@ -1,5 +1,6 @@
 const ingredients = require('../models/ingredients');
 const recipe = require('../models/recipe');
+const { body, validationResult } = require('express-validator');
 
 // Display list of all recipes
 exports.recipe_list = (req, res, next) => {
@@ -35,13 +36,81 @@ exports.recipe_detail = async (req, res, next) => {
 
 // Display recipe create form GET
 exports.recipe_create_get = (req, res) => {
-  res.send('not implemented: recipe create GET');
+  ingredients.find()
+    .populate('name')
+    .exec(function (err, ingredients_list) {
+      if (err) {
+        return next(err);
+      }
+      res.render(
+        'recipe_form', 
+        { 
+          title: 'Create Recipe',
+          ingredients: ingredients_list,
+        });
+    });
 };
 
 // Display recipe create on POST
-exports.recipe_create_post = (req, res) => {
-  res.send('not implemented: recipe create POST');
-};
+exports.recipe_create_post = [
+  // Validate and sanitize the form
+  body('name', 'Invalid recipe name').trim().isLength({ min: 1 }).escape(),
+  body('instructions', 'Invalid instructions text').trim().escape(),
+  body('value', 'Invalid value').isInt({ min: 0 }),
+  
+  // Process request after validation and sanitization
+  (req, res, next) => {
+    // Extract the validation errors from a request
+    const errors = validationResult(err);
+
+    // Create a recipe object with escaped trimmed data
+    const recipeObj = new recipe(
+      {
+        name: req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1),
+        // TODO: figure out how to post from a checklist of ingredients
+        ingredients: 'to be implemented',
+        instructions: req.body.instructions,
+        value: req.body.value,
+      }
+    );
+    if (!errors.isEmpty()) {
+      // Errors found. Render form with errors at bottom.
+      res.render('recipe_form', {
+        title: 'Create Recipe',
+        recipeObj,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      // Data is valid
+      // Check if recipe exists
+      recipe.findOne({ name: req.body.name }).exec((err, found_recipe) => {
+        if(found_recipe) {
+          // Recipe name exists, render page again with message
+          res.render('recipe_form', {
+            title: 'Create Recipe',
+            recipeObj,
+            errors: [
+              {
+                msg: 'Recipe name already exists. Update the recpie name.'
+              }
+            ]
+          });
+          return;
+        } else {
+          recipeObj.save((err) => {
+            if (err) {
+              return next(err);
+            }
+
+            // Recipe is saved. Redirect to the newly created recipe
+            res.redirect(recipeObj.url);
+          });
+        }
+      });
+    }
+  }
+];
 
 // Display recipe delete form on GET
 exports.recipe_delete_get = (req, res) => {

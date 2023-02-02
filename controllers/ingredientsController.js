@@ -61,8 +61,8 @@ exports.ingredient_create_post = [
     // Extract the validation errors from a request
     const errors = validationResult(req);
 
-    // Create a genre object with escaped and trimmed data.
-    const ingredientName = new ingredient(
+    // Create a ingredient object with escaped and trimmed data.
+    const ingredientObj = new ingredient(
       { 
         name: req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1),
         qty: req.body.qty,
@@ -72,8 +72,8 @@ exports.ingredient_create_post = [
       // There are errors. Render the form again with sanitized values/error messages.
       res.render('ingredient_form', {
         title: 'Create Ingredient',
-        ingredientName,
-        error: errors.array(),
+        ingredientObj,
+        errors: errors.array(),
       });
       return;
     } else {
@@ -84,18 +84,18 @@ exports.ingredient_create_post = [
           // Ingredient exists, redirect to its detail page
           res.redirect(found_ingredient.url);
         } else {
-          ingredientName.save((err) => {
+          ingredientObj.save((err) => {
             if (err) {
               return next(err);
             }
             // Ingredient is saved. Redirect to ingredient detail page
-            res.redirect(ingredientName.url);
+            res.redirect(ingredientObj.url);
           });
         }
       });
     }
   }
-]
+];
 
 // Display ingredient delete form on GET
 exports.ingredient_delete_get = (req, res) => {

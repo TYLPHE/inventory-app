@@ -53,6 +53,8 @@ exports.ingredient_create_get = (req, res) => {
 exports.ingredient_create_post = [
   // Validate and sanitize the form
   body('name', 'Ingredient name required').trim().isLength({min: 1}).escape(),
+  body('qty', 'Must be a positive integer').isInt({ min: 0 }),
+  body('cost', 'Must be a positive integer').isInt({ min: 0 }),
 
   // Process request after validation and sanitization
   (req, res, next) => {
@@ -60,7 +62,12 @@ exports.ingredient_create_post = [
     const errors = validationResult(req);
 
     // Create a genre object with escaped and trimmed data.
-    const ingredientName = new ingredient({ name: req.body.name });
+    const ingredientName = new ingredient(
+      { 
+        name: req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1),
+        qty: req.body.qty,
+        cost: req.body.cost,
+      });
     if(!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
       res.render('ingredient_form', {

@@ -6,6 +6,9 @@ block content
   form(method='POST' action='') 
     div.form-group 
       label(for='name') Recipe Name: 
-      input(type='text' value=recipe===undefined ? '' : recipe.name)
-      label(for='ingredients') Ingredients: 
-      p= ingredients
+      input.form-control(type='text' value=recipe===undefined ? '' : recipe.name)
+      label Ingredients:
+        each val in ingredients
+          input(type='checkbox' id=val.name value=val)
+          label(for=val.name) #{val.name}
+          

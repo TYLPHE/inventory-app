@@ -24,4 +24,5 @@ const mongoDB = "mongodb+srv://'account':'password'@cluster0.rbwivgx.mongodb.net
 In the case above, we connect to mongodb.net/INVENTORY, without the 'inventory' part, mongodb defaults to creating a database called 'test'.
 
 ## Notes to self
-Validation and sanitization: `npm install express-validator`
+* Validation and sanitization: `npm install express-validator`
+* list of validators and sanitizers: https://github.com/validatorjs/validator.js

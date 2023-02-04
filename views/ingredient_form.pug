@@ -6,11 +6,15 @@ block content
   form(method='POST' action='')
     div.form-group 
       label(for='name') Name of ingredient: 
-      input#name.form-control(type='text' placeholder='Cabbage' name='name' value=undefined===ingredient ? '' : ingredient.name)
+      input#name.form-control(type='text' name='name' value=undefined===ingredient ? '' : ingredient.name)
+      
+    div.form-group
       label(for='qty') Quantity owned: 
-      input#qty.form-control(type='number' placeholder=0 name='qty' value=ingredient===undefined ? 0 : ingredient.qty)
+      input#qty.form-control(type='number' min=0 placeholder=0 name='qty' value=ingredient===undefined ? 0 : ingredient.qty)
+      
+    div.form-group
       label(for='cost') Cost per quantity: 
-      input#cost.form-control(type='number' placeholder=0 name='cost' value=ingredient===undefined ? 0 : ingredient.cost)
+      input#cost.form-control(type='number' min=0 placeholder=0 name='cost' value=ingredient===undefined ? 0 : ingredient.cost)
     button.btn.btn-primary(type='submit') Submit 
 
     if errors 

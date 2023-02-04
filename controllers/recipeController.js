@@ -61,18 +61,24 @@ exports.recipe_create_post = [
   // Process request after validation and sanitization
   (req, res, next) => {
     // Extract the validation errors from a request
-    const errors = validationResult(err);
-
+    const errors = validationResult(req);
+    console.log('req.body.ingredients: ', req.body.ingredients)
     // Create a recipe object with escaped trimmed data
     const recipeObj = new recipe(
       {
         name: req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1),
         // TODO: figure out how to post from a checklist of ingredients
-        ingredients: 'to be implemented',
+        // looks like req.body.ingredients are returning as an array of string.
         instructions: req.body.instructions,
+        ingredients: [],
         value: req.body.value,
       }
     );
+
+    req.body.ingredients.forEach(element => {
+      recipeObj.ingredients.push(element);
+    })
+
     if (!errors.isEmpty()) {
       // Errors found. Render form with errors at bottom.
       res.render('recipe_form', {
@@ -98,14 +104,16 @@ exports.recipe_create_post = [
           });
           return;
         } else {
-          recipeObj.save((err) => {
-            if (err) {
-              return next(err);
-            }
+          if (err) return next(err);
+          console.log('recipeObj: ', recipeObj)
+          // recipeObj.save((err) => {
+          //   if (err) {
+          //     return next(err);
+          //   }
 
-            // Recipe is saved. Redirect to the newly created recipe
-            res.redirect(recipeObj.url);
-          });
+          //   // Recipe is saved. Redirect to the newly created recipe
+          //   res.redirect(recipeObj.url);
+          // });
         }
       });
     }

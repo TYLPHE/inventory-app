@@ -6,9 +6,20 @@ block content
   form(method='POST' action='') 
     div.form-group 
       label(for='name') Recipe Name: 
-      input.form-control(type='text' value=recipe===undefined ? '' : recipe.name)
-      label Ingredients:
+      input.form-control(type='text' name='name' value=recipe===undefined ? '' : recipe.name)
+
+    div.form-group
+      div Ingredients: 
         each val in ingredients
-          input(type='checkbox' id=val.name value=val)
-          label(for=val.name) #{val.name}
-          
+          div.form-check
+            input.form-check-input(type='checkbox' name='ingredients' id=val.name value=val)
+            label.form-check-label(for=val.name) #{val.name}
+
+    div.form-group
+      label(for='instructions') Instructions: 
+      textarea.form-control(rows=5 id='instructions' name='instructions' value=recipe===undefined ? '' : recipe.instructions)
+      
+    div.form-group
+      label(for='value') Cost of recipe (dollars): 
+      input.form-control(type='number' id='value' name='value' min=0 placeholder=0 value=recipe===undefined ? '' : recipe.value)
+    button.btn.btn-primary(type='submit') Submit

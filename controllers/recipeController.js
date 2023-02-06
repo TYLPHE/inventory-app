@@ -1,4 +1,5 @@
 const ingredients = require('../models/ingredients');
+const dish = require('../models/dish');
 const recipe = require('../models/recipe');
 const { body, validationResult } = require('express-validator');
 
@@ -35,19 +36,37 @@ exports.recipe_detail = async (req, res, next) => {
 };
 
 // Display recipe create form GET
-exports.recipe_create_get = (req, res) => {
+exports.recipe_create_get = (req, res, next) => {
+  // Find all ingredients to add to recipe
   ingredients.find()
     .populate('name')
     .exec(function (err, ingredients_list) {
       if (err) {
         return next(err);
       }
-      res.render(
-        'recipe_form', 
-        { 
-          title: 'Create Recipe',
-          ingredients: ingredients_list,
-        });
+      // Find all dishes. Recipe must be associated with dish
+      // Ex. Dish: Pizza > Recipe: Pepperoni pizza
+      dish.find()
+      .populate('dishName')
+      .exec(function (err, dish_list) {
+        if (err) {
+          return next(err);
+        }
+        res.render(
+          'recipe_form',
+          {
+            title: 'Create Recipe',
+            ingredients: ingredients_list,
+            dish: dish_list,
+          }
+        )
+      })
+      // res.render(
+      //   'recipe_form', 
+      //   { 
+      //     title: 'Create Recipe',
+      //     ingredients: ingredients_list,
+      //   });
     });
 };
 
@@ -62,22 +81,22 @@ exports.recipe_create_post = [
   (req, res, next) => {
     // Extract the validation errors from a request
     const errors = validationResult(req);
-    console.log('req.body.ingredients: ', req.body.ingredients)
+
+    // Parse checklist to an array of objects
+    const jsonArr = [];
+    req.body.ingredients.forEach(e => {
+      jsonArr.push(JSON.parse(e));
+    })
+
     // Create a recipe object with escaped trimmed data
     const recipeObj = new recipe(
       {
         name: req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1),
-        // TODO: figure out how to post from a checklist of ingredients
-        // looks like req.body.ingredients are returning as an array of string.
         instructions: req.body.instructions,
-        ingredients: [],
+        ingredients: jsonArr,
         value: req.body.value,
       }
     );
-
-    req.body.ingredients.forEach(element => {
-      recipeObj.ingredients.push(element);
-    })
 
     if (!errors.isEmpty()) {
       // Errors found. Render form with errors at bottom.
@@ -106,16 +125,25 @@ exports.recipe_create_post = [
         } else {
           if (err) return next(err);
           console.log('recipeObj: ', recipeObj)
-          // recipeObj.save((err) => {
-          //   if (err) {
-          //     return next(err);
-          //   }
+          recipeObj.save((err) => {
+            if (err) {
+              return next(err);
+            }
 
-          //   // Recipe is saved. Redirect to the newly created recipe
-          //   res.redirect(recipeObj.url);
-          // });
+            // Recipe is saved. Redirect to the newly created recipe
+            res.redirect(recipeObj.url);
+          });
         }
       });
+      // TODO: Find the dish and associate it
+      // dish.findOne({ dishName: req.body.recipe })
+      // save((err) => {
+      //   if (err) {
+      //     return next(err);
+      //   } else {
+      //     req.body.recipe
+      //   }
+      // });
     }
   }
 ];

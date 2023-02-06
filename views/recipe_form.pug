@@ -5,6 +5,12 @@ block content
 
   form(method='POST' action='') 
     div.form-group 
+      #{console.log(dish)}
+      label(for='dish') Type of Dish: 
+      select.form-control(name='dish' id='dish')
+        each val in dish
+          option(value=val.dishName) #{val.dishName}
+    div.form-group 
       label(for='name') Recipe Name: 
       input.form-control(type='text' name='name' value=recipe===undefined ? '' : recipe.name)
 

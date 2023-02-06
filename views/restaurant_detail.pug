@@ -1,7 +1,6 @@
 extends layout 
 
 block content 
-  //- #{console.log('dish:', dish)}
   h1= title 
   h3= restaurant.name 
   ul 
@@ -11,6 +10,5 @@ block content
     li Menu:
       each val in dish
         ul 
-          #{console.log(val)}
           li
             a(href=val.url) #{val.dishName}

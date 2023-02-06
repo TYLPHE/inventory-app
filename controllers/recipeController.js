@@ -61,12 +61,6 @@ exports.recipe_create_get = (req, res, next) => {
           }
         )
       })
-      // res.render(
-      //   'recipe_form', 
-      //   { 
-      //     title: 'Create Recipe',
-      //     ingredients: ingredients_list,
-      //   });
     });
 };
 
@@ -124,26 +118,23 @@ exports.recipe_create_post = [
           return;
         } else {
           if (err) return next(err);
-          console.log('recipeObj: ', recipeObj)
           recipeObj.save((err) => {
             if (err) {
               return next(err);
             }
-
             // Recipe is saved. Redirect to the newly created recipe
-            res.redirect(recipeObj.url);
+            // Also update the dish list with new recipe
+            const parseDish = JSON.parse(req.body.dish);
+            parseDish.recipe.push(recipeObj.id);
+            dish.findByIdAndUpdate(parseDish._id, parseDish, {}, (err) => {
+              if (err) {
+                return next(err);
+              }
+              res.redirect(recipeObj.url);
+            });
           });
         }
       });
-      // TODO: Find the dish and associate it
-      // dish.findOne({ dishName: req.body.recipe })
-      // save((err) => {
-      //   if (err) {
-      //     return next(err);
-      //   } else {
-      //     req.body.recipe
-      //   }
-      // });
     }
   }
 ];

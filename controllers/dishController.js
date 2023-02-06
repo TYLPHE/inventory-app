@@ -12,7 +12,6 @@ exports.dish_list = (req, res, next) => {
       }
 
       // Successful > render page
-      console.log(list_dish);
       res.render('dish_list', {
         title: 'Dish List',
         dishList: list_dish
@@ -26,10 +25,12 @@ exports.dish_detail = (req, res, next) => {
     if(err) {
       return next(err);
     }
+    console.log('dishdetail', dishDetail)
     recipe.findById(dishDetail.recipe, function(err, recipeDetail) {
       if(err) {
         return next(err);
       }
+      console.log(recipeDetail)
       res.render('dish_detail', {
         title: 'Dish detail',
         dish: dishDetail,

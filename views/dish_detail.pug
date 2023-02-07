@@ -5,5 +5,11 @@ block content
   h3= dish.dishName
   ul 
     li Price: $#{dish.price}/ea
-    li 
-      a(href=recipe.url) Recipe
+    if recipe.length === 0
+      li No recipes exist. Please create a new recipe.
+    else
+      li Recipes
+        ul
+          each val in recipe
+            li
+              a(href=val.url) #{val.name}

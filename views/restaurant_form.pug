@@ -1,0 +1,32 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  form(method='POST' action='')
+    div.form-group 
+      label(for='name') Name of restaurant: 
+      input#name.form-control(type='text' name='name' value=restaurant===undefined ? '' : restaurant.name)
+
+    div.form-group 
+      label(for='address') Address: 
+      input#address.form-control(type='text' name='address' value=restaurant===undefined ? '' : restaurant.address)
+
+    div.form-group 
+      label(for='phone') Phone number (10-digits): 
+      input#phone.form-control(type='tel' name='phone' pattern='[0-9]{10}' value=restaurant===undefined ? '' : restaurant.phone)
+
+    div.form-group 
+      div Dishes: 
+        each val in dish 
+          div.form-check 
+            input.form-check-input(type='checkbox' name='dish' id=val.dishName value=val)
+            label.form-check-label(for=val.dishName) #{val.dishName} 
+
+    button.btn.btn-primary(type='submit') Submit 
+
+  if errors 
+    p Errors 
+    ul 
+      for error in errors 
+        li!=error.msg

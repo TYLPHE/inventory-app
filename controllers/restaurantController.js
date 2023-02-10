@@ -4,8 +4,9 @@ const dish = require('../models/dish');
 const ingredients = require('../models/ingredients');
 const recipe = require('../models/recipe');
 const staff = require('../models/staff');
-
+const { body, validationResult } = require('express-validator')
 const async = require('async');
+const { json } = require('express');
 
 // Display website home page
 exports.index = (req, res) => {
@@ -82,13 +83,116 @@ exports.restaurant_detail = async (req, res, next) => {
 
 // Display restaurant create form GET
 exports.restaurant_create_get = (req, res) => {
-  res.send('not implemented: restaurant create GET');
+  // Find all dishes to add to restaurant form
+  dish.find()
+    .populate('dishName')
+    .exec((err, dish_list) => {
+      if (err) {
+        return next(err);
+      }
+      res.render('restaurant_form', 
+        { 
+          title: 'Create Restaurant',
+          dish: dish_list,
+        }
+      );
+    })
 };
 
 // Display restaurant create on POST
-exports.restaurant_create_post = (req, res) => {
-  res.send('not implemented: restaurant create POST');
-};
+exports.restaurant_create_post = [
+  // Validate and sanitize the form
+  body('name', 'Invalid restaurant name').trim().isLength({ min: 1 }).escape(),
+  body('address', 'Invalid address').trim().isLength({min:1}).escape(),
+
+  // Process request after validation and sanitization
+  (req, res, next) => {
+    // Extract validation errors from a request
+    const errors = validationResult(req);
+
+    // Parse checklist to an array of objects
+    const jsonArr = [];
+    // If user checks only ONE checkbox, returned data is a string
+    // Multiple checks returns an array of strings
+    if (typeof req.body.dish == 'string') {
+      const parsed = JSON.parse(req.body.dish)
+      jsonArr.push(parsed._id);
+    } else {
+      req.body.dish.forEach(element => {
+        const parsed = JSON.parse(element);
+        jsonArr.push(parsed._id);
+      });
+    } 
+
+    // Create a restaurant object with escaped trimmed data
+    const restaurantObj = new restaurant(
+      {
+        name: req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1),
+        address: req.body.address,
+        phone: req.body.phone,
+        dishes: jsonArr,
+      }
+    );
+
+    if(!errors.isEmpty()) {
+      // Errors found. Render form with errors at the bottom.  
+      // Find all dishes to add to restaurant form
+      dish.find()
+      .populate('dishName')
+      .exec((err, dish_list) => {
+        if (err) {
+          return next(err);
+        }
+        res.render('restaurant_form', 
+          { 
+            title: 'Create Restaurant',
+            dish: dish_list,
+            errors: errors.array(),
+            restaurant: restaurantObj,
+          }
+        );
+      });
+    } else {
+      // Data is valid
+      // Check if restaurant exists
+      restaurant.findOne({ name: req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1) }, function(err, found_rest) {
+        if(err) return next(err);
+        console.log('found rest: ', found_rest)
+        if (found_rest) {
+          // Find all dishes to add to restaurant form
+          dish.find()
+            .populate('dishName')
+            .exec((err, dish_list) => {
+              if (err) {
+                return next(err);
+              }
+              res.render('restaurant_form', 
+                { 
+                  title: 'Create Restaurant',
+                  dish: dish_list,
+                  errors: [
+                    {
+                      msg: 'Restaurant name already exists. Update restaurant name.'
+                    }
+                  ],
+                  restaurant: restaurantObj,
+                }
+              );
+            });
+          return;
+        } else {
+          if (err) return next(err);
+          restaurantObj.save((err) => {
+            if (err) return next(err);
+            // Restaurant is saved. Redirect to the newly created restaurant
+            res.redirect(restaurantObj.url);
+          });
+        }
+      });
+    }
+  }
+];
+
 
 // Display restaurant delete form on GET
 exports.restaurant_delete_get = (req, res) => {

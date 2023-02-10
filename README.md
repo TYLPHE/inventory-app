@@ -23,6 +23,13 @@ const mongoDB = "mongodb+srv://'account':'password'@cluster0.rbwivgx.mongodb.net
 
 In the case above, we connect to mongodb.net/INVENTORY, without the 'inventory' part, mongodb defaults to creating a database called 'test'.
 
+### Model.findOne() returns null
+My form was capitalizing the restaurant names when I was sanitizing and validating the form data. When I was checking if the restaurant name exists in the database before saving it, I was checking for a lowercased version of the restaurant name. For example, checking 'burger' against 'Burger'.
+
+My query would return null, which meant that it was ok to save the form data to the database. This created multiple restaurants with the same name!
+
+I had to fix this by changing any restaurants with all lowercase names to a capitalized first letter!
+
 ## Notes to self
 * Validation and sanitization: `npm install express-validator`
 * list of validators and sanitizers: https://github.com/validatorjs/validator.js

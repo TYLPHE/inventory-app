@@ -30,6 +30,12 @@ My query would return null, which meant that it was ok to save the form data to 
 
 I had to fix this by changing any restaurants with all lowercase names to a capitalized first letter!
 
+### Data structure was too big
+I have to be honest with myself, this project is intended for extra Mongoose and Express practice. If you see the data structure above and compare it to the actual project, it's missing staff and equipment. For the sake of continuing with The Odin Project, I have decided to reduce the size of the data structure to just Restaurant, Dish, Recipe, and Ingredients.
+
 ## Notes to self
 * Validation and sanitization: `npm install express-validator`
 * list of validators and sanitizers: https://github.com/validatorjs/validator.js
+
+## TODO
+Updating a recipe does not update dish properly

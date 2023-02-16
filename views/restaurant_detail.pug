@@ -11,4 +11,12 @@ block content
       each val in dish
         ul 
           li
-            a(href=val.url) #{val.dishName}
+            if val
+              a(href=val.url) #{val.dishName}
+
+  hr 
+  p 
+    a(href=restaurant.url+'/delete') Delete restaurant 
+  p 
+    a(href=restaurant.url+'/update') Update restaurant 
+    

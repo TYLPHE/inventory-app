@@ -193,23 +193,126 @@ exports.restaurant_create_post = [
   }
 ];
 
-
 // Display restaurant delete form on GET
-exports.restaurant_delete_get = (req, res) => {
-  res.send('not implemented: restaurant delete GET');
+exports.restaurant_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      findRestaurant(callback) {
+        restaurant.findById(req.params.id).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) next(err);
+      if (results.findRestaurant === null) {
+        // No results
+        res.redirect('/catalog/');
+      }
+      res.render('restaurant_delete', {
+        title: 'Delete Restaurant',
+        restaurant: results.findRestaurant,
+      });
+    }
+  );
 };
 
 // Handle restaurant delete on POST
 exports.restaurant_delete_post = (req, res) => {
-  res.send('not implemented: restaurant delete POST');
+  restaurant.findByIdAndRemove(req.body.restaurantId, (err) => {
+    if (err) next(err);
+    res.redirect('/catalog/');
+  });
 };
 
 // Display restaurant update form on GET
 exports.restaurant_update_get = (req, res) => {
-  res.send('not implemented: restaurant update GET');
+  async.parallel(
+    {
+      findRestaurant(callback) {
+        restaurant.findById(req.params.id).exec(callback);
+      },
+      findDish(callback) {
+        dish
+          .find()
+          .populate('dishName')
+          .exec(callback);
+      }
+    },
+    (err, results) => {
+      if (err) next(err);
+      if(results.findRestaurant === null) {
+        const err = new Error('No restaurant found');
+        err.status = 404;
+        return next(err);
+      }
+      res.render('restaurant_form', {
+        title: 'Update Restaurant',
+        restaurant: results.findRestaurant,
+        dish: results.findDish,
+      });
+    }
+  );
 };
 
 // Handle restaurant update on POST
-exports.restaurant_update_post = (req, res) => {
-  res.send('not implemented: restaurant update POST');
-};
+exports.restaurant_update_post = [
+  // Validate and sanitize the form
+  body('name', 'Invalid restaurant name').trim().isLength({ min: 1 }).escape(),
+  body('address', 'Invalid address').trim().isLength({min:1}).escape(),
+
+  // Process request after validation and sanitization
+  (req, res, next) => {
+    // Extract validation errors from a request
+    const errors = validationResult(req);
+
+    // Parse checklist to an array of objects
+    const jsonArr = [];
+    // If user checks only ONE checkbox, returned data is a string
+    // Multiple checks returns an array of strings
+    if (typeof req.body.dish == 'string') {
+      const parsed = JSON.parse(req.body.dish)
+      jsonArr.push(parsed._id);
+    } else {
+      req.body.dish.forEach(element => {
+        const parsed = JSON.parse(element);
+        jsonArr.push(parsed._id);
+      });
+    } 
+
+    // Create a restaurant object with escaped trimmed data
+    const restaurantObj = new restaurant(
+      {
+        name: req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1),
+        address: req.body.address,
+        phone: req.body.phone,
+        dishes: jsonArr,
+        _id: req.params.id // Needed for update
+      }
+    );
+
+    if(!errors.isEmpty()) {
+      // Errors found. Render form with errors at the bottom.  
+      // Find all dishes to add to restaurant form
+      dish.find()
+      .populate('dishName')
+      .exec((err, dish_list) => {
+        if (err) {
+          return next(err);
+        }
+        res.render('restaurant_form', 
+          { 
+            title: 'Create Restaurant',
+            dish: dish_list,
+            errors: errors.array(),
+            restaurant: restaurantObj,
+          }
+        );
+      });
+    } else {
+      // Data is valid
+      restaurant.findByIdAndUpdate(req.params.id, restaurantObj, {}, (err, updated) => {
+        if (err) next(err);
+        res.redirect(updated.url);
+      });
+    }
+  }
+];

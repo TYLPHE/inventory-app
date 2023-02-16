@@ -13,3 +13,10 @@ block content
       ul 
         li #{recipe.instructions}
     li Cost: $#{recipe.value}
+
+  hr 
+  p 
+    a(href=recipe.url+'/delete') Delete recipe 
+  p 
+    a(href=recipe.url+'/update') Update recipe 
+    

@@ -48,7 +48,7 @@ router.post('/equipment/create', equipmentController.equipment_create_post);
 router.get('/equipment/:id/delete', equipmentController.equipment_delete_get);
 
 // POST request to delete equipment
-router.post('equipment/:id/delete', equipmentController.equipment_delete_post);
+router.post('/equipment/:id/delete', equipmentController.equipment_delete_post);
 
 // GET request to update equipment
 router.get('/equipment/:id/update', equipmentController.equipment_update_get);
@@ -73,7 +73,7 @@ router.post('/dish/create', dishController.dish_create_post);
 router.get('/dish/:id/delete', dishController.dish_delete_get);
 
 // POST request to delete dish
-router.post('dish/:id/delete', dishController.dish_delete_post);
+router.post('/dish/:id/delete', dishController.dish_delete_post);
 
 // GET request to update dish
 router.get('/dish/:id/update', dishController.dish_update_get);
@@ -123,7 +123,7 @@ router.post('/recipe/create', recipeController.recipe_create_post);
 router.get('/recipe/:id/delete', recipeController.recipe_delete_get);
 
 // POST request to delete recipe
-router.post('recipe/:id/delete', recipeController.recipe_delete_post);
+router.post('/recipe/:id/delete', recipeController.recipe_delete_post);
 
 // GET request to update recipe
 router.get('/recipe/:id/update', recipeController.recipe_update_get);
@@ -148,7 +148,7 @@ router.post('/staff/create', staffController.staff_create_post);
 router.get('/staff/:id/delete', staffController.staff_delete_get);
 
 // POST request to delete staff
-router.post('staff/:id/delete', staffController.staff_delete_post);
+router.post('/staff/:id/delete', staffController.staff_delete_post);
 
 // GET request to update staff
 router.get('/staff/:id/update', staffController.staff_update_get);

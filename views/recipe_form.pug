@@ -2,7 +2,6 @@ extends layout
 
 block content 
   h1= title 
-
   form(method='POST' action='') 
     div.form-group 
       label(for='dish') Type of Dish: 
@@ -23,7 +22,9 @@ block content
 
     div.form-group
       label(for='instructions') Instructions: 
-      textarea.form-control(rows=5 id='instructions' name='instructions' value=recipe===undefined ? '' : recipe.instructions)
+      textarea.form-control(rows=5 id='instructions' name='instructions')
+        if recipe !== undefined
+          | #{recipe.instructions}
       
     div.form-group
       label(for='value') Cost of recipe (dollars): 

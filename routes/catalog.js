@@ -98,7 +98,7 @@ router.post('/ingredients/create', ingredientsController.ingredient_create_post)
 router.get('/ingredients/:id/delete', ingredientsController.ingredient_delete_get);
 
 // POST request to delete ingredients
-router.post('ingredients/:id/delete', ingredientsController.ingredient_delete_post);
+router.post('/ingredients/:id/delete', ingredientsController.ingredient_delete_post);
 
 // GET request to update ingredients
 router.get('/ingredients/:id/update', ingredientsController.ingredient_update_get);

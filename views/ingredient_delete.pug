@@ -1,0 +1,25 @@
+extends layout 
+
+block content 
+  h1 #{title}: #{ingredient.name} 
+  
+  if recipe.length 
+    p #[strong Delete ingredient from the following recipes before deleting this ingredient.] 
+
+    div(style='margin-left:20px; margin-top:20px') 
+      h4 Ingredients included in the following
+
+      dl 
+      each val in recipe
+        dt 
+          a(href=val.url) #{val.name} 
+
+  else 
+    p Do you really want to delete this ingredient? 
+
+    form(method='POST' action='') 
+      div.form-group 
+        input#ingredientId.form-control(type='hidden', name='ingredientId',
+        required='true', value=ingredient._id)
+      button.btn.btn-primary(type='submit') Delete 
+

@@ -7,3 +7,10 @@ block content
     li qty: #{ingredient.qty} 
     if ingredient.cost
       li $#{ingredient.cost}/ea
+
+  hr
+  p 
+    a(href=ingredient.url+'/delete') Delete ingredient
+  p
+    a(href=ingredient.url+'/update') Update ingredient 
+    

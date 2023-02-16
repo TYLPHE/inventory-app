@@ -157,7 +157,6 @@ exports.restaurant_create_post = [
       // Check if restaurant exists
       restaurant.findOne({ name: req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1) }, function(err, found_rest) {
         if(err) return next(err);
-        console.log('found rest: ', found_rest)
         if (found_rest) {
           // Find all dishes to add to restaurant form
           dish.find()

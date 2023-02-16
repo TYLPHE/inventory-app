@@ -9,8 +9,11 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const catalogRouter = require('./routes/catalog');
 
-const app = express();
+const compression = require('compression');
+const helmet = require('helmet');
 
+const app = express();
+app.use(helmet());
 // Set up mongoose connection
 const mongoose = require("mongoose");
 const mongoDB = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.rbwivgx.mongodb.net/inventory?retryWrites=true&w=majority`;
@@ -18,6 +21,8 @@ mongoose.set('strictQuery', false);
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
+
+app.use(compression());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

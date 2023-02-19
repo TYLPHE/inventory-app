@@ -1,13 +1,14 @@
 # inventory-app
 Manage a restaurant's inventory
-![A gif of how the app works](https://TYLPHE.github.io/inventory-app/)
+
+![A gif of how the app works(To be created)](https://TYLPHE.github.io/inventory-app/)
 
 ## Links
 - [Try Inventory App here](https://inventory-app-production-8918.up.railway.app/catalog)
 - [Link to assignment](https://www.theodinproject.com/lessons/nodejs-inventory-application)
 
 ## Summary
-Create, read, update, and delete a restaurant's inventory with Inventory App. This project allows me to practice more with Express, Mongoose, and Pug (formerly known as Jade).
+Create, read, update, and delete a restaurant's inventory with Inventory App. This project allows me to practice more with Express, Mongoose, and Pug (formerly known as Jade). The website is published on Railway.
 
 ## Data Structure
 Below is a simple layout of my data structure:

@@ -4,7 +4,8 @@ Manage a restaurant's inventory
 ![A gif of how the app works(To be created)](https://github.com/TYLPHE/TYLPHE/blob/main/readmeAssets/inventory-app.gif)
 
 ## Links
-- [Try Inventory App here](https://inventory-app-production-8918.up.railway.app/catalog)
+- [Try Inventory App on Railway](https://inventory-app-production-8918.up.railway.app/catalog)
+  - Limited hosting - Needs to be redeployed each month due to 500hr hosting limit
 - [Link to assignment](https://www.theodinproject.com/lessons/nodejs-inventory-application)
 
 ## Summary

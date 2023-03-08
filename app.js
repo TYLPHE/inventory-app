@@ -16,7 +16,7 @@ const app = express();
 app.use(helmet());
 // Set up mongoose connection
 const mongoose = require("mongoose");
-const mongoDB = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.rbwivgx.mongodb.net/inventory?retryWrites=true&w=majority`;
+const mongoDB = process.env.MONGODB_URI || `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.rbwivgx.mongodb.net/inventory?retryWrites=true&w=majority`;
 mongoose.set('strictQuery', false);
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;

@@ -17,7 +17,7 @@ const dotenv = require('dotenv').config();
 // strictQuery phasing out in mongoose 7
 mongoose.set('strictQuery', false);
 
-const mongoDB = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.rbwivgx.mongodb.net/inventory?retryWrites=true&w=majority`;
+const mongoDB = `mongodb://${process.env.USER}:${process.env.PASSWORD}@containers-us-west-60.railway.app:7835`;
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,

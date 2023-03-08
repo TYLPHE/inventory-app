@@ -35,7 +35,9 @@ I had to fix this by changing any restaurants with all lowercase names to a capi
 I have to be honest with myself, this project is intended for extra Mongoose and Express practice. If you see the data structure above and compare it to the actual project, it's missing staff and equipment. For the sake of continuing with The Odin Project, I have decided to reduce the size of the data structure to just Restaurant, Dish, Recipe, and Ingredients.
 
 ## Railway starter plan - Manually refresh each month
-Railway has a limited free plan. In order to start the free plan again, I need to restart the application each month to start a 500-hour (20 days) hosting time limit. I've hosted the website on railway but in order for users to try my app, I provided a GitHub link instead.
+Railway has a limited free plan. In order to start the free plan again, I need to restart the application each month to start a 500-hour (20 days) hosting time limit. I've hosted the website on railway but users may not be able to play with it.
+
+I will provide a gif in this readme to show CRUD functionality.
 
 ## Notes to self
 * Validation and sanitization: `npm install express-validator`
